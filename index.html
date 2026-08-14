@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Список справ</title>
+
+    <!-- Шрифт із макета — Inter. Preconnect прискорює завантаження. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <main class="app">
+      <h1 class="visually-hidden">Список справ</h1>
+
+      <!--
+        Це <form>, а не <div> із кнопкою. Причина проста: у формі Enter
+        у полі вводу сам викликає submit. Якби це був div, довелося б ловити
+        натискання Enter вручну — зайвий код заради того, що браузер уміє сам.
+      -->
+      <form class="new-task" id="new-task-form">
+        <!--
+          <label> обов'язковий, але за макетом його не видно: роль підпису
+          виконує placeholder. Клас visually-hidden ховає текст від ока
+          й лишає його читалці з екрана. Просто display:none так не працює —
+          він ховає елемент і від читалки теж.
+        -->
+        <label class="visually-hidden" for="new-task-input">Нова справа</label>
+        <input
+          class="new-task__input"
+          id="new-task-input"
+          name="task"
+          type="text"
+          placeholder="Створити нову справу"
+          autocomplete="off"
+        />
+
+        <button class="new-task__button" type="submit">Створити</button>
+      </form>
+
+      <!--
+        Список порожній у розмітці — його наповнює JavaScript із масиву tasks.
+        Ніяких «зразкових» справ у HTML: єдине джерело правди про стан —
+        масив у app.js, а розмітка лише його показує.
+      -->
+      <ul class="tasks" id="tasks"></ul>
+
+      <!--
+        Порожній стан. Ховаємо й показуємо його через атрибут hidden —
+        браузер сам прибирає такий елемент і з екрана, і з дерева доступності.
+      -->
+      <p class="empty" id="empty" hidden>
+        Справ поки немає. Додай першу — поле вгорі чекає.
+      </p>
+    </main>
+
+    <!--
+      defer означає «завантаж одразу, виконай після розбору розмітки» —
+      тож document.getElementById в app.js уже щось знаходить.
+
+      Чому не type="module"? Модулі браузер завантажує за правилами CORS,
+      а сторінка, відкрита подвійним кліком (адреса file://), їх не проходить —
+      скрипт просто не виконається. Модулі потрібні там, де є import/export;
+      тут увесь код в одному файлі.
+    -->
+    <script defer src="app.js"></script>
+  </body>
+</html>
